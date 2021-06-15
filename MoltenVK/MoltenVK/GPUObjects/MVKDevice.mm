@@ -1621,6 +1621,8 @@ void MVKPhysicalDevice::initFeatures() {
     _features.robustBufferAccess = true;  // XXX Required by Vulkan spec
     _features.fullDrawIndexUint32 = true;
     _features.independentBlend = true;
+    _features.geometryShader = true;  // XXX Required by DXVK for D3D10
+    _features.tessellationShader = true;  // XXX Required by DXVK for D3D11
     _features.sampleRateShading = true;
     _features.depthBiasClamp = true;
     _features.fillModeNonSolid = true;
@@ -1634,6 +1636,7 @@ void MVKPhysicalDevice::initFeatures() {
     _features.shaderUniformBufferArrayDynamicIndexing = true;
     _features.shaderStorageBufferArrayDynamicIndexing = true;
     _features.shaderClipDistance = true;
+    _features.shaderCullDistance = true;  // XXX Required by DXVK for 10level9
     _features.shaderInt16 = true;
     _features.multiDrawIndirect = true;
     _features.inheritedQueries = true;
@@ -3968,7 +3971,7 @@ void MVKDevice::initPhysicalDevice(MVKPhysicalDevice* physicalDevice, const VkDe
 	// Prefer MTLEvent, because MTLEvent handles sync across MTLCommandBuffers and MTLCommandQueues.
 	// However, do not allow use of MTLEvents on NVIDIA GPUs, which have demonstrated trouble with MTLEvents.
 	// Since MTLFence config is disabled by default, emulation will be used on NVIDIA unless MTLFence is enabled.
-	bool canUseMTLEventForSem4 = _pMetalFeatures->events && mvkConfig().semaphoreUseMTLEvent && (_pProperties->vendorID != kNVVendorId);
+	bool canUseMTLEventForSem4 = _pMetalFeatures->events && mvkConfig().semaphoreUseMTLEvent && (_pProperties->vendorID != kAppleVendorId || kNVVendorId);
 	bool canUseMTLFenceForSem4 = _pMetalFeatures->fences && mvkConfig().semaphoreUseMTLFence;
 	_vkSemaphoreStyle = canUseMTLEventForSem4 ? VkSemaphoreStyleUseMTLEvent : (canUseMTLFenceForSem4 ? VkSemaphoreStyleUseMTLFence : VkSemaphoreStyleUseEmulation);
 	switch (_vkSemaphoreStyle) {
