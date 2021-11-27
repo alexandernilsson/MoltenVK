@@ -3971,7 +3971,7 @@ void MVKDevice::initPhysicalDevice(MVKPhysicalDevice* physicalDevice, const VkDe
 	// Prefer MTLEvent, because MTLEvent handles sync across MTLCommandBuffers and MTLCommandQueues.
 	// However, do not allow use of MTLEvents on NVIDIA GPUs, which have demonstrated trouble with MTLEvents.
 	// Since MTLFence config is disabled by default, emulation will be used on NVIDIA unless MTLFence is enabled.
-	bool canUseMTLEventForSem4 = _pMetalFeatures->events && mvkConfig().semaphoreUseMTLEvent && (_pProperties->vendorID != kAppleVendorId || kNVVendorId);
+	bool canUseMTLEventForSem4 = _pMetalFeatures->events && mvkConfig().semaphoreUseMTLEvent && (_pProperties->vendorID != kNVVendorId) && (_pProperties->vendorID != kAppleVendorId);
 	bool canUseMTLFenceForSem4 = _pMetalFeatures->fences && mvkConfig().semaphoreUseMTLFence;
 	_vkSemaphoreStyle = canUseMTLEventForSem4 ? VkSemaphoreStyleUseMTLEvent : (canUseMTLFenceForSem4 ? VkSemaphoreStyleUseMTLFence : VkSemaphoreStyleUseEmulation);
 	switch (_vkSemaphoreStyle) {

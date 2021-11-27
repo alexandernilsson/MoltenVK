@@ -240,7 +240,7 @@ void mvkSetConfig(const MVKConfiguration& mvkConfig);
 #   define MVK_ALLOW_METAL_EVENTS    1
 #endif
 #ifndef MVK_ALLOW_METAL_FENCES
-#   define MVK_ALLOW_METAL_FENCES    0
+#   define MVK_ALLOW_METAL_FENCES    1 // XXX Required by DXVK for Apple Silicon GPUs
 #endif
 
 /** Substitute Metal 2D textures for Vulkan 1D images. Enabled by default. */
